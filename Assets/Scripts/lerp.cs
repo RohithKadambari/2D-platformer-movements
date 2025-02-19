@@ -1,18 +1,37 @@
 using UnityEngine;
 
-public class lerp : MonoBehaviour
+public class LerpMovement : MonoBehaviour
 {
     public GameObject PointA;
     public GameObject PointB;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public float lerpDuration = 2f; 
+    private float lerpTime = 0f;
+    private bool movingToB = true;
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
-        Mathf.Lerp((PointA.transform.position - PointB.transform.position).magnitude, PointB.transform.position.magnitude, 0.5f);
+        
+        lerpTime += Time.deltaTime / lerpDuration;
+
+        if (lerpTime > 1f)
+        {
+            lerpTime = 0f; // Reset the lerp time
+            movingToB = !movingToB; // Reverse the direction
+        }
+
+        
+        if (movingToB)
+        {
+            transform.position = Vector3.Lerp(PointA.transform.position, PointB.transform.position, lerpTime);
+        }
+        else
+        {
+            transform.position = Vector3.Lerp(PointB.transform.position, PointA.transform.position, lerpTime);
+        }
     }
 }

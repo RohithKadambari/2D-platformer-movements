@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 
     public Animator playerAnim;
     public bool isGrounded;
+    public bool doublejump;
 
     // Start is called before the first frame update
     void Start()
@@ -45,13 +46,24 @@ public class Player : MonoBehaviour
             playerAnim.Play("Idle");
         }
 
-       
+
         if (Input.GetKeyDown(KeyCode.W) && isGrounded)
         {
             playerAnim.Play("Jump");
             playerRb.linearVelocity = new Vector2(playerRb.linearVelocity.x, jumpSpeed);
             isGrounded = false; // Assumimg the player is not grounded after jumping
+            doublejump = true;
         }
+
+        else if(doublejump)
+            {
+                playerAnim.Play("Jump");
+                playerRb.linearVelocity = new Vector2(playerRb.linearVelocity.x, jumpSpeed);
+                doublejump = false;
+            }
+        
+
+        
     }
 
     // Detect when the player lands on the ground
@@ -60,6 +72,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
+            playerAnim.Play("Idle");
         }
     }
 }
